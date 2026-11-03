@@ -1,9 +1,8 @@
 package com.smartcity.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -20,8 +19,11 @@ public class EnergyMeter implements Serializable {
     @Column(name = "meter_code", nullable = false, unique = true, length = 50)
     private String meterCode;
 
-    @Column(name = "location", nullable = false, length = 100)
-    private String location;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "zone_id", nullable = false)
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private Zone zone;
 
     @Column(name = "raw_reading_kwh", nullable = false)
     private Double rawReadingKwh = 0.0;
