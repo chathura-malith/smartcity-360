@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCity360 - Energy Meter Management</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/48/city-buildings.png">
+    <link rel="shortcut icon" type="image/png" href="https://img.icons8.com/fluency/48/city-buildings.png">
+    <div id="header-container"></div>
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+<!-- Main Content Area -->
+<div class="container-fluid px-4 mb-5 flex-grow-1">
+    <div class="row g-4">
+
+        <!-- Left Form Panel -->
+        <div class="col-lg-4 col-md-5">
+            <div class="card shadow border-0 rounded-3">
+                <div class="card-header bg-primary text-white fw-bold py-3">
+                    <i class="fa-solid fa-bolt me-2"></i>Process Energy Meter
+                </div>
+                <div class="card-body p-4">
+                    <form id="meterForm">
+                        <div class="mb-3">
+                            <label for="meterCode" class="form-label fw-bold">Meter Code</label>
+                            <input type="text" class="form-control form-control-lg fs-6" id="meterCode" placeholder="e.g. EM-1001" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="zoneId" class="form-label fw-bold">Assigned Zone</label>
+                            <select class="form-select form-select-lg fs-6" id="zoneId" required>
+                                <option value="" selected disabled>Loading Zones...</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="rawReading" class="form-label fw-bold">Raw Reading (kWh)</label>
+                            <input type="number" step="0.01" class="form-control form-control-lg fs-6" id="rawReading" placeholder="e.g. 450.75" required>
+                        </div>
+
+                        <label class="form-label fw-bold mt-2">Dynamic Security Wrappers:</label>
+                        <div class="card bg-light border-0 p-3 mb-3">
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="chkEncryption">
+                                <label class="form-check-label fw-semibold" for="chkEncryption"><i class="fa-solid fa-lock text-danger me-1"></i> Encryption</label>
+                            </div>
+                            <div class="form-check form-switch mb-2">
+                                <input class="form-check-input" type="checkbox" id="chkAuth">
+                                <label class="form-check-label fw-semibold" for="chkAuth"><i class="fa-solid fa-shield-halved text-success me-1"></i> Authentication</label>
+                            </div>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="chkCompression">
+                                <label class="form-check-label fw-semibold" for="chkCompression"><i class="fa-solid fa-file-zipper text-warning me-1"></i> Compression</label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold shadow-sm">
+                            <i class="fa-solid fa-paper-plane me-2"></i>Process & Save Stream
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Table Panel -->
+        <div class="col-lg-8 col-md-7">
+            <div class="card shadow border-0 rounded-3 h-100">
+                <div class="card-header bg-dark text-white fw-bold py-3 d-flex justify-content-between align-items-center">
+                    <span><i class="fa-solid fa-database me-2 text-info"></i>Processed Energy Meters Data</span>
+                    <button class="btn btn-sm btn-outline-light" onclick="loadMeters()"><i class="fa-solid fa-rotate me-1"></i> Refresh</button>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped align-middle mb-0" style="min-width: 750px;">
+                            <thead class="table-dark text-nowrap">
+                            <tr>
+                                <th style="width: 12%;">Code</th>
+                                <th style="width: 23%;">Zone</th>
+                                <th style="width: 15%;">Raw Reading</th>
+                                <th style="width: 15%;">Active</th>
+                                <th style="width: 35%;">Processed Stream Payload</th>
+                            </tr>
+                            </thead>
+                            <tbody id="meterTableBody">
+                            <!-- Dynamic Rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="footer-container"></div>
+
+<!-- Script to Load Modular Header/Footer -->
+<script>
+    fetch('includes/header.html')
+        .then(res => res.text())
+        .then(data => document.getElementById('header-container').innerHTML = data);
+
+    fetch('includes/footer.html')
+        .then(res => res.text())
+        .then(data => document.getElementById('footer-container').innerHTML = data);
+</script>
+<script src="js/meter.js"></script>
+</body>
+</html>
