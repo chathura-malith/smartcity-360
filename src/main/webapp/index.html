@@ -98,11 +98,16 @@
 
 <div id="footer-container"></div>
 
-<!-- Script to Load Modular Header/Footer -->
 <script>
     fetch('includes/header.html')
         .then(res => res.text())
-        .then(data => document.getElementById('header-container').innerHTML = data);
+        .then(data => {
+            document.getElementById('header-container').innerHTML = data;
+            setTimeout(() => {
+                const energyLink = document.getElementById('nav-energy-meters');
+                if (energyLink) energyLink.classList.add('active');
+            }, 50);
+        });
 
     fetch('includes/footer.html')
         .then(res => res.text())
