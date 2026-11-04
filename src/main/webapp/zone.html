@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCity360 - Zone Management</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/48/city-buildings.png">
+    <link rel="shortcut icon" type="image/png" href="https://img.icons8.com/fluency/48/city-buildings.png">
+
+    <div id="header-container"></div>
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+<div class="container-fluid px-4 mb-5 flex-grow-1">
+    <div class="row g-4">
+
+        <div class="col-lg-4 col-md-5">
+            <div class="card shadow border-0 rounded-3">
+                <div class="card-header bg-primary text-white fw-bold py-3">
+                    <i class="fa-solid fa-map-location-dot me-2"></i>Create New Zone
+                </div>
+                <div class="card-body p-4">
+                    <form id="zoneForm">
+                        <div class="mb-3">
+                            <label for="zoneName" class="form-label fw-bold">Zone Name</label>
+                            <input type="text" class="form-control form-control-lg fs-6" id="zoneName"
+                                   placeholder="e.g. Downtown District" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="zoneType" class="form-label fw-bold">Zone Type</label>
+                            <select class="form-select form-select-lg fs-6" id="zoneType" required>
+                                <option value="" selected disabled>Select Type...</option>
+                                <option value="CITY">City</option>
+                                <option value="DISTRICT">District</option>
+                                <option value="STREET">Street</option>
+                                <option value="BUILDING">Building</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="parentZoneId" class="form-label fw-bold">Parent Zone (Optional for City)</label>
+                            <select class="form-select form-select-lg fs-6" id="parentZoneId">
+                                <option value="" selected>None (Root/City Level)</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3 row">
+                            <div class="col-6">
+                                <label for="powerStatus" class="form-label fw-bold">Power</label>
+                                <select class="form-select form-select-lg fs-6" id="powerStatus">
+                                    <option value="ON" selected>ON</option>
+                                    <option value="OFF">OFF</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label for="initialEnergy" class="form-label fw-bold">Init Usage (kWh)</label>
+                                <input type="number" step="0.01" value="0.0"
+                                       class="form-control form-control-lg fs-6" id="initialEnergy" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold shadow-sm mt-2">
+                            <i class="fa-solid fa-plus-circle me-2"></i>Create Zone
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8 col-md-7">
+            <div class="card shadow border-0 rounded-3 h-100">
+                <div class="card-header bg-dark text-white fw-bold py-3 d-flex justify-content-between align-items-center">
+                    <span><i class="fa-solid fa-network-wired me-2 text-info">
+
+                    </i>Zone Hierarchy & Composite Operations</span>
+                    <button class="btn btn-sm btn-outline-light" onclick="loadZoneHierarchy()">
+                        <i class="fa-solid fa-rotate me-1"></i> Refresh</button>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                        <table class="table table-hover table-striped align-middle mb-0" style="min-width: 800px;">
+                            <thead class="table-dark text-nowrap position-sticky top-0">
+                            <tr>
+                                <th style="width: 5%;">ID</th>
+                                <th style="width: 35%;">Zone Structure (Hierarchy)</th>
+                                <th style="width: 15%;">Power Status</th>
+                                <th style="width: 15%;">Reported Usage</th>
+                                <th style="width: 30%;" class="text-center">Composite Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody id="zoneTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="footer-container"></div>
+
+<script>
+    fetch('includes/header.html')
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById('header-container').innerHTML = data;
+            setTimeout(() => {
+                const zoneLink = document.getElementById('nav-zone-management');
+                if (zoneLink) zoneLink.classList.add('active');
+            }, 50);
+        });
+
+    fetch('includes/footer.html')
+        .then(res => res.text())
+        .then(data => document.getElementById('footer-container').innerHTML = data);
+</script>
+<script src="js/zone.js"></script>
+</body>
+</html>
