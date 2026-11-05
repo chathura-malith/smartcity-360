@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartCity360 - Complaint Escalation Management</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/48/city-buildings.png">
+
+  <div id="header-container"></div>
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+<div class="container-fluid px-4 mb-5 flex-grow-1">
+  <div class="row g-4">
+
+    <div class="col-lg-4 col-md-5">
+      <div class="card shadow border-0 rounded-3">
+        <div class="card-header bg-primary text-white fw-bold py-3">
+          <i class="fa-solid fa-triangle-exclamation me-2"></i>Submit Citizen Complaint
+        </div>
+        <div class="card-body p-4">
+          <form id="complaintForm">
+            <div class="mb-3">
+              <label for="complaintDescription" class="form-label fw-bold">Complaint Description</label>
+              <textarea class="form-control fs-6" id="complaintDescription" rows="4"
+                        placeholder="e.g. Major power outage in Main Street Sector 4" required></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="complaintSeverity" class="form-label fw-bold">Severity Level</label>
+              <select class="form-select form-select-lg fs-6" id="complaintSeverity" required>
+                <option value="" selected disabled>Select Severity...</option>
+                <option value="LOW">LOW</option>
+                <option value="MEDIUM">MEDIUM</option>
+                <option value="HIGH">HIGH</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold shadow-sm mt-2">
+              <i class="fa-solid fa-paper-plane me-2"></i>Escalate & Process Complaint
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-8 col-md-7">
+      <div class="card shadow border-0 rounded-3 h-100">
+        <div class="card-header bg-dark text-white fw-bold py-3 d-flex justify-content-between align-items-center">
+          <span><i class="fa-solid fa-sitemap me-2 text-info"></i>Complaint Escalations</span>
+          <button class="btn btn-sm btn-outline-light" onclick="loadComplaints()">
+            <i class="fa-solid fa-rotate me-1"></i> Refresh</button>
+        </div>
+        <div class="card-body p-0">
+          <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+            <table class="table table-hover table-striped align-middle mb-0" style="min-width: 750px;">
+              <thead class="table-dark text-nowrap position-sticky top-0">
+              <tr>
+                <th style="width: 15%;">Code</th>
+                <th style="width: 35%;">Description</th>
+                <th style="width: 15%;">Severity</th>
+                <th style="width: 15%;">Status</th>
+                <th style="width: 20%;">Assigned Handler</th>
+              </tr>
+              </thead>
+              <tbody id="complaintTableBody">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="footer-container"></div>
+
+<script>
+  fetch('includes/header.html')
+          .then(res => res.text())
+          .then(data => {
+            document.getElementById('header-container').innerHTML = data;
+            setTimeout(() => {
+              const complaintLink = document.getElementById('nav-complaint-management');
+              if (complaintLink) complaintLink.classList.add('active');
+            }, 50);
+          });
+
+  fetch('includes/footer.html')
+          .then(res => res.text())
+          .then(data => document.getElementById('footer-container').innerHTML = data);
+</script>
+<script src="js/complaint.js"></script>
+</body>
+</html>
