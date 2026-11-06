@@ -15,8 +15,7 @@ const Toast = Swal.mixin({
 document.addEventListener('DOMContentLoaded', () => {
     loadZoneHierarchy();
 
-    document.getElementById('zoneForm').addEventListener('submit', async
-    (e) => {
+    document.getElementById('zoneForm').addEventListener('submit',async(e) => {
         e.preventDefault();
 
         const parentVal = document.getElementById('parentZoneId').value;
