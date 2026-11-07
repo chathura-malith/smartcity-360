@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCity360 - Policy Interpreter</title>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/48/city-buildings.png">
+    <div id="header-container"></div>
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+<div class="container-fluid px-4 mb-5 flex-grow-1">
+    <div class="row g-4">
+
+        <div class="col-lg-4 col-md-5">
+            <div class="card shadow border-0 rounded-3 mb-4">
+                <div class="card-header bg-primary text-white fw-bold py-3">
+                    <i class="fa-solid fa-code me-2"></i>Define City Policy (DSL)
+                </div>
+                <div class="card-body p-4">
+                    <form id="policyForm">
+                        <div class="alert alert-info py-2" style="font-size: 0.85em;">
+                            <i class="fa-solid fa-lightbulb me-1">
+
+                            </i> <strong>DSL Syntax:</strong> Use operators <code>&gt;</code>,
+                            <code>&lt;</code>, <code>==</code> connected by <code>AND</code>.<br>
+                            <em>Example: NOISE &gt; 60 AND TIME &gt; 22</em>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="policyName" class="form-label fw-bold">Policy Name</label>
+                            <input type="text" class="form-control" id="policyName"
+                                   placeholder="e.g. Night Noise Restriction" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="ruleExpression" class="form-label fw-bold">Rule Expression (DSL)</label>
+                            <input type="text" class="form-control font-monospace text-primary fw-bold"
+                                   id="ruleExpression" placeholder="NOISE > 60 AND TIME > 22" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="policyDescription" class="form-label fw-bold">Description</label>
+                            <textarea class="form-control" id="policyDescription" rows="2"
+                                      placeholder="Brief description of the rule..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold shadow-sm mt-2">
+                            <i class="fa-solid fa-plus-circle me-2"></i>Save City Policy
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card shadow border-0 rounded-3">
+                <div class="card-header bg-secondary text-white fw-bold py-3">
+                    <i class="fa-solid fa-vial me-2"></i>Interpreter Engine Simulator
+                </div>
+                <div class="card-body p-4">
+                    <form id="evaluateForm">
+                        <div class="mb-3">
+                            <label for="selectPolicy" class="form-label fw-bold">Select Active Policy</label>
+                            <select class="form-select" id="selectPolicy" required>
+                                <option value="" selected disabled>Choose Policy...</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="envVariable" class="form-label fw-bold">Variable Name</label>
+                            <input type="text" class="form-control text-uppercase" id="envVariable"
+                                   placeholder="e.g. NOISE" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="envValue" class="form-label fw-bold">Runtime Value</label>
+                            <input type="number" class="form-control" id="envValue" placeholder="e.g. 75" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-dark btn-lg w-100 fw-bold shadow-sm">
+                            <i class="fa-solid fa-play me-2"></i>Evaluate Policy DSL
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8 col-md-7">
+            <div class="card shadow border-0 rounded-3 h-100">
+                <div class="card-header bg-dark text-white fw-bold py-3 d-flex justify-content-between align-items-center">
+                    <span><i class="fa-solid fa-scroll me-2 text-warning"></i>Active City Policies (AST Interpreter)</span>
+                    <button class="btn btn-sm btn-outline-light" onclick="loadPolicies()">
+                        <i class="fa-solid fa-rotate me-1"></i> Refresh</button>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive" style="max-height: 600px; overflow-y: auto;">
+                        <table class="table table-hover table-striped align-middle mb-0" style="min-width: 750px;">
+                            <thead class="table-dark text-nowrap position-sticky top-0">
+                            <tr>
+                                <th style="width: 5%;">ID</th>
+                                <th style="width: 25%;">Policy Name</th>
+                                <th style="width: 35%;">DSL Rule Expression</th>
+                                <th style="width: 25%;">Description</th>
+                                <th style="width: 10%; text-align: center;">Status</th>
+                            </tr>
+                            </thead>
+                            <tbody id="policyTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="footer-container"></div>
+
+<script>
+    fetch('includes/header.html')
+        .then(res => res.text())
+        .then(data => {
+            document.getElementById('header-container').innerHTML = data;
+            setTimeout(() => {
+                const navLink = document.getElementById('nav-policy');
+                if (navLink) navLink.classList.add('active');
+            }, 50);
+        });
+
+    fetch('includes/footer.html')
+        .then(res => res.text())
+        .then(data => document.getElementById('footer-container').innerHTML = data);
+</script>
+<script src="js/policy.js"></script>
+</body>
+</html>
